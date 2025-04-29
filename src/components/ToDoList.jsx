@@ -1,15 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import ToDoItem from "./ToDoItem";
 import CompleteList from "./CompleteList";
+import { getItem, setItem } from "../utils/localStorage";
 
 /**
  * Component that represents a to-do list. Contains and maintains
  * a list of ToDoItem components
  */
 function ToDoList() {
-  const [tasks, setTasks] = useState([]);
-  const [completedTasks, setCompleted] = useState([]);
+  const [tasks, setTasks] = useState(() => {
+    const item = getItem("tasks");
+    return item || [];
+  });
+  const [completedTasks, setCompleted] = useState(() => {
+    const item = getItem("completedTasks");
+    return item || [];
+  });
   const [text, setText] = useState("");
+
+  // Save state to localStorage everytime tasks/completedTasks changes
+  useEffect(() => {
+    setItem("tasks", tasks);
+  }, [tasks]);
+  useEffect(() => {
+    setItem("completedTasks", completedTasks);
+  }, [completedTasks]);
 
   /**
    * This function is called everytime the value inside the text field

@@ -17,6 +17,7 @@ button:hover {
 }
 h3 {
   font-size: medium;
+  width: auto;
 }
 
 .completed-tasks-header,
@@ -62,7 +63,8 @@ h3 {
 
 .task-list,
 .complete-list {
-  justify-self: center;
+  justify-self: anchor-center;
+  text-align: left;
 }
 
 .text-field {
