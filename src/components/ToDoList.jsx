@@ -91,6 +91,14 @@ function ToDoList() {
     }
   };
 
+  const renameTask = (index, value) => {
+    setTasks((prev) => {
+      const updatedTasks = [...prev];
+      updatedTasks[index] = value;
+      return updatedTasks;
+    });
+  };
+
   return (
     <>
       <div className="todo-header">
@@ -119,6 +127,8 @@ function ToDoList() {
             onComplete={() => completeTask(task, idx)}
             onMoveUp={() => moveTaskUp(idx)}
             onMoveDown={() => moveTaskDown(idx)}
+            onRename={renameTask}
+            index={idx}
           />
         ))}
       </ol>

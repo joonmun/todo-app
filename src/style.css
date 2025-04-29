@@ -37,6 +37,17 @@ h3 {
   margin: 5px;
 }
 
+.todo-item-title {
+  font-size: medium;
+  font-weight: bold;
+  justify-items: center;
+  border: none;
+}
+.todo-item-title:focus {
+  border: none;
+  outline: none;
+}
+
 .left-buttons {
   justify-self: left;
 }
@@ -45,7 +56,6 @@ h3 {
   justify-self: right;
 }
 
-.todo-item-name,
 .complete-item-name {
   align-self: center;
 }
