@@ -37,6 +37,14 @@ h3 {
   margin: 5px;
 }
 
+.todo-list-title {
+  font-size: x-large;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
 .todo-item-title {
   font-size: medium;
   font-weight: bold;
@@ -68,7 +76,7 @@ h3 {
 
 .add-task {
   justify-self: center;
-  padding: 50px;
+  padding: 30px;
 }
 
 .task-list,

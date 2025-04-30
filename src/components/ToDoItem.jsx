@@ -28,10 +28,11 @@ function ToDoItem({
       <div className="todo-item-title-container">
         <form onSubmit={() => onRename(index, text)}>
           <input
+            name="todo item name"
             className="todo-item-title"
             type="text"
             value={text}
-            onChange={handleTextChange}
+            onChange={(e) => setText(e.target.value)}
           />
         </form>
       </div>

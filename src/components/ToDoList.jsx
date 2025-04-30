@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import ToDoItem from "./ToDoItem";
 import CompleteList from "./CompleteList";
 import { getItem, setItem } from "../utils/localStorage";
@@ -7,32 +7,32 @@ import { getItem, setItem } from "../utils/localStorage";
  * Component that represents a to-do list. Contains and maintains
  * a list of ToDoItem components
  */
-function ToDoList() {
+function ToDoList({ listId, nameOfList, onRename }) {
+  const uniqueTasksId = `tasks-${listId}`;
+  const uniqueCompleteId = `completed-${listId}`;
+
+  const [listName, setListName] = useState(`${nameOfList}`);
+
   const [tasks, setTasks] = useState(() => {
-    const item = getItem("tasks");
+    const item = getItem(uniqueTasksId);
     return item || [];
   });
+
   const [completedTasks, setCompleted] = useState(() => {
-    const item = getItem("completedTasks");
+    const item = getItem(uniqueCompleteId);
     return item || [];
   });
+
   const [text, setText] = useState("");
 
   // Save state to localStorage everytime tasks/completedTasks changes
   useEffect(() => {
-    setItem("tasks", tasks);
-  }, [tasks]);
-  useEffect(() => {
-    setItem("completedTasks", completedTasks);
-  }, [completedTasks]);
+    setItem(uniqueTasksId, tasks);
+  }, [tasks, uniqueTasksId]);
 
-  /**
-   * This function is called everytime the value inside the text field
-   * is updated. It will update the value of text using setText
-   */
-  const handleTextChange = (e) => {
-    setText(e.target.value);
-  };
+  useEffect(() => {
+    setItem(uniqueCompleteId, completedTasks);
+  }, [completedTasks, uniqueCompleteId]);
 
   /**
    * This function is called everytime the text field is submitted
@@ -102,17 +102,26 @@ function ToDoList() {
   return (
     <>
       <div className="todo-header">
-        <h2>Grocery List</h2>
+        <form onSubmit={() => onRename(listId, listName)}>
+          <input
+            name="todo list name"
+            className="todo-list-title"
+            type="text"
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
+          />
+        </form>
       </div>
       <div className="add-task">
         <form onSubmit={createTask}>
           <input
+            name="create task field"
             className="text-field"
             type="text"
             placeholder="Type here..."
             value={text}
             maxLength="30"
-            onChange={handleTextChange}
+            onChange={(e) => setText(e.target.value)}
           />
           <button className="create-button">Create Task</button>
         </form>
