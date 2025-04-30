@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 function CompleteItem({ title, onDelete, onUncomplete }) {
   return (
     <div className="complete-item">
@@ -9,7 +7,7 @@ function CompleteItem({ title, onDelete, onUncomplete }) {
         </button>
       </div>
       <div className="complete-item-name">
-        <h3>{title}</h3>
+        <del className="strikethrough-item">{title}</del>
       </div>
       <div>
         <button className="delete-btn" onClick={onDelete}>

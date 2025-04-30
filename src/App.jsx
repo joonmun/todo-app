@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ToDoList from "./components/ToDoList";
-import { setItem, getItem } from "./utils/localStorage";
+import { setItem, getItem, removeItem } from "./utils/localStorage";
 
 function App() {
   const [toggleList, setToggleList] = useState(() => {
@@ -13,11 +13,6 @@ function App() {
     return item || [];
   });
 
-  const [listIds, setListIds] = useState(() => {
-    const item = getItem("listIds");
-    return item || [];
-  });
-
   const [nextId, setNextId] = useState(() => {
     const item = getItem("nextId");
     return item || 0;
@@ -26,10 +21,6 @@ function App() {
   useEffect(() => {
     setItem("toggleList", toggleList);
   }, [toggleList]);
-
-  useEffect(() => {
-    setItem("listIds", listIds);
-  }, [listIds]);
 
   useEffect(() => {
     setItem("listObjects", listObjects);
@@ -56,9 +47,40 @@ function App() {
     );
   };
 
+  const deleteList = (id) => {
+    const temp = listObjects;
+    setListObjects((prev) => prev.filter((item) => item.id !== id));
+    // Reap child data from localStorage
+    removeItem(`tasks-${id}`);
+    removeItem(`completed-${id}`);
+    // Toggle to first list or next list
+    const newIdx = temp[0].id === id ? 1 : 0;
+    setToggleList(listObjects[newIdx].id);
+  };
+
   return (
     <>
       <div className="list-nav-bar">
+        {listObjects.map(({ id, name }) => (
+          <button
+            key={id}
+            onClick={() => switchList(id)}
+            style={{
+              fontWeight: toggleList === id ? "bold" : "normal",
+              border: "2px solid black",
+              borderRadius: "8%",
+              padding: "5px",
+              marginRight: "1px",
+            }}
+          >
+            <h4>{name}&nbsp;</h4>
+          </button>
+        ))}
+        <button className="create-list-btn" onClick={() => makeNewList()}>
+          Create List
+        </button>
+      </div>
+      <div>
         {listObjects.map(
           ({ id, name }) =>
             id === toggleList && (
@@ -67,23 +89,10 @@ function App() {
                 listId={id}
                 nameOfList={name}
                 onRename={renameList}
+                onDelete={deleteList}
               />
             )
         )}
-      </div>
-      <div>
-        <button onClick={() => makeNewList()}>Create New List</button>
-      </div>
-      <div>
-        {listObjects.map(({ id, name }) => (
-          <button
-            key={id}
-            onClick={() => switchList(id)}
-            style={{ fontWeight: toggleList === id ? "bold" : "normal" }}
-          >
-            <h4>{name}&nbsp;</h4>
-          </button>
-        ))}
       </div>
     </>
   );

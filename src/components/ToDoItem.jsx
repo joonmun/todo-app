@@ -11,10 +11,6 @@ function ToDoItem({
 }) {
   const [text, setText] = useState(title);
 
-  const handleTextChange = (e) => {
-    setText(e.target.value);
-  };
-
   return (
     <div className="todo-item">
       <div className="left-buttons">
@@ -33,6 +29,8 @@ function ToDoItem({
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            size="32"
+            maxLength="32"
           />
         </form>
       </div>

@@ -7,7 +7,8 @@ import { getItem, setItem } from "../utils/localStorage";
  * Component that represents a to-do list. Contains and maintains
  * a list of ToDoItem components
  */
-function ToDoList({ listId, nameOfList, onRename }) {
+function ToDoList({ listId, nameOfList, onRename, onDelete }) {
+  // Variables that each instance uses to render
   const uniqueTasksId = `tasks-${listId}`;
   const uniqueCompleteId = `completed-${listId}`;
 
@@ -109,8 +110,12 @@ function ToDoList({ listId, nameOfList, onRename }) {
             type="text"
             value={listName}
             onChange={(e) => setListName(e.target.value)}
+            maxLength="32"
           />
         </form>
+        <button className="delete-list-btn" onClick={() => onDelete(listId)}>
+          🗑️
+        </button>
       </div>
       <div className="add-task">
         <form onSubmit={createTask}>
@@ -120,7 +125,7 @@ function ToDoList({ listId, nameOfList, onRename }) {
             type="text"
             placeholder="Type here..."
             value={text}
-            maxLength="30"
+            maxLength="32"
             onChange={(e) => setText(e.target.value)}
           />
           <button className="create-button">Create Task</button>

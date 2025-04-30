@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CompleteItem from "./CompleteItem";
 
 // This component displays a list of completed tasks
