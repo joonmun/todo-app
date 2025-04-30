@@ -3,6 +3,7 @@
 Features:
 - Home screen that welcomes user if they do not have any outstanding lists
 - User can login/create new user
+- Add tooltips to buttons
 - https://auth0.com/blog/complete-guide-to-react-user-authentication/
 - ~~Create multiple lists separated by tabs~~
 - ~~Text field to create new task~~
