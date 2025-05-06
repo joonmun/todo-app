@@ -41,26 +41,36 @@ function ToDoList({ listId, nameOfList, onRename, onDelete }) {
    */
   const createTask = (e) => {
     e.preventDefault();
-    setTasks((currTasks) => [...currTasks, text]);
+    const newTask = {
+      id: crypto.randomUUID(),
+      title: text,
+    };
+    setTasks((currTasks) => [...currTasks, newTask]);
     // Reset the text field
     setText("");
   };
 
-  const deleteTask = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
+  const deleteTask = (id) => {
+    const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
   };
 
-  const completeTask = (task, index) => {
+  const completeTask = (task) => {
     // Add task to completed tasks
-    setCompleted((currTasks) => [task, ...currTasks]);
+    setCompleted((currTasks) => [task.title, ...currTasks]);
     // Remove task from tasks
-    deleteTask(index);
+    deleteTask(task.id);
   };
 
   const uncompleteTask = (task, index) => {
+    // Generate new task object
+    const newTask = {
+      id: crypto.randomUUID(),
+      title: task,
+    };
+
     // Add task to tasks
-    setTasks((currTasks) => [...currTasks, task]);
+    setTasks((currTasks) => [...currTasks, newTask]);
     // Remove task from completed tasks
     deleteCompleteTask(index);
   };
@@ -71,33 +81,33 @@ function ToDoList({ listId, nameOfList, onRename, onDelete }) {
   };
 
   const moveTaskUp = (index) => {
-    if (index > 0) {
-      const updatedTasks = [...tasks];
+    setTasks((prevTasks) => {
+      if (index <= 0) return prevTasks;
+      const updatedTasks = [...prevTasks];
       [updatedTasks[index], updatedTasks[index - 1]] = [
         updatedTasks[index - 1],
         updatedTasks[index],
       ];
-      setTasks(updatedTasks);
-    }
+      return updatedTasks;
+    });
   };
 
   const moveTaskDown = (index) => {
-    if (index < tasks.length - 1) {
-      const updatedTasks = [...tasks];
+    setTasks((prevTasks) => {
+      if (index >= prevTasks.length - 1) return prevTasks;
+      const updatedTasks = [...prevTasks];
       [updatedTasks[index], updatedTasks[index + 1]] = [
         updatedTasks[index + 1],
         updatedTasks[index],
       ];
-      setTasks(updatedTasks);
-    }
+      return updatedTasks;
+    });
   };
 
   const renameTask = (index, value) => {
-    setTasks((prev) => {
-      const updatedTasks = [...prev];
-      updatedTasks[index] = value;
-      return updatedTasks;
-    });
+    setTasks((prev) =>
+      prev.map((obj) => (obj.id === index ? { ...obj, title: value } : obj))
+    );
   };
 
   return (
@@ -135,14 +145,14 @@ function ToDoList({ listId, nameOfList, onRename, onDelete }) {
         <h3 className="task-list-header">Tasks</h3>
         {tasks.map((task, idx) => (
           <ToDoItem
-            key={idx}
-            title={task}
-            onDelete={() => deleteTask(idx)}
-            onComplete={() => completeTask(task, idx)}
+            key={task.id}
+            title={task.title}
+            onDelete={() => deleteTask(task.id)}
+            onComplete={() => completeTask(task)}
             onMoveUp={() => moveTaskUp(idx)}
             onMoveDown={() => moveTaskDown(idx)}
             onRename={renameTask}
-            index={idx}
+            id={task.id}
           />
         ))}
       </ol>

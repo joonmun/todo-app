@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 function ToDoItem({
-  index,
+  id,
   title,
   onComplete,
   onDelete,
@@ -9,7 +9,12 @@ function ToDoItem({
   onMoveDown,
   onRename,
 }) {
-  const [text, setText] = useState(title);
+  const [inputValue, setInputValue] = useState(title);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onRename(id, inputValue);
+  };
 
   return (
     <div className="todo-item">
@@ -22,13 +27,13 @@ function ToDoItem({
         </button>
       </div>
       <div className="todo-item-title-container">
-        <form onSubmit={() => onRename(index, text)}>
+        <form onSubmit={handleSubmit}>
           <input
             name="todo item name"
             className="todo-item-title"
             type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
             size="32"
             maxLength="32"
           />
