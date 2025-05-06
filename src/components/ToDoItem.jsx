@@ -11,11 +11,6 @@ function ToDoItem({
 }) {
   const [inputValue, setInputValue] = useState(title);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onRename(id, inputValue);
-  };
-
   return (
     <div className="todo-item">
       <div className="left-buttons">
@@ -27,7 +22,7 @@ function ToDoItem({
         </button>
       </div>
       <div className="todo-item-title-container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={() => onRename(id, inputValue)}>
           <input
             name="todo item name"
             className="todo-item-title"
