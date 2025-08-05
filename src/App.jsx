@@ -48,14 +48,16 @@ function App() {
   };
 
   const deleteList = (id) => {
-    const temp = listObjects;
-    setListObjects((prev) => prev.filter((item) => item.id !== id));
+    const updatedList = listObjects.filter((item) => item.id !== id);
+    setListObjects(updatedList);
     // Reap child data from localStorage
     removeItem(`tasks-${id}`);
     removeItem(`completed-${id}`);
     // Toggle to first list or next list
-    const newIdx = temp[0].id === id ? 1 : 0;
-    setToggleList(listObjects[newIdx].id);
+    if (updatedList.length > 0) {
+      console.log(updatedList);
+      setToggleList(updatedList[0].id);
+    }
   };
 
   return (
