@@ -9,5 +9,6 @@ Features:
 
 
 Future Plans:
-- Users can login/create a new user
+- Turn the app full stack (DB, API)
+- User authentication
 - Add tooltips to buttons
